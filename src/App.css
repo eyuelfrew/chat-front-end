@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Salsa&display=swap");
+.App {
+  background-image: url("./assets/background_image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  width: 100%;
+}
+.offcanvas-pos {
+  margin-left: 1rem;
+  border-radius: 5%;
+  margin-top: 6rem;
+  width: 25% !important;
+}
+.card-hover:hover {
+  background: #43719e;
+  color: white;
+  cursor: pointer;
+}
+.messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  width: 100%;
+}
