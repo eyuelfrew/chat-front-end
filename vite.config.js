@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://chat-app-back-6bsl.onrender.com",
+      "/api": {
+        target: "https://chat-app-back-6bsl.onrender.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });
