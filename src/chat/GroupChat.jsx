@@ -24,10 +24,7 @@ const GroupChat = (props) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(
-        `https://chat-app-back-6bsl.onrender.com/api/user?search=${search}`,
-        config
-      );
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -48,7 +45,7 @@ const GroupChat = (props) => {
         },
       };
       const { data } = await axios.post(
-        "https://chat-app-back-6bsl.onrender.com/api/chat/group",
+        "/api/chat/group",
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((user) => user._id)),
