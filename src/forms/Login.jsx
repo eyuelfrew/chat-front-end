@@ -41,7 +41,7 @@ const Login = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label className="text-white fw-bolder">
-                Email Addrese why
+                Email Addrese
               </Form.Label>
               <Form.Control
                 onChange={(e) => setEmail(e.target.value)}
