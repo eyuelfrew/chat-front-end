@@ -1,9 +1,12 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/.*",
-      "dest": "https://chat-app-back-6bsl.onrender.com/:splat",
-      "methods": ["GET", "POST", "PUT", "DELETE"]
+      "source": "/api/(.*)",
+      "destination": "https://chat-app-back-6bsl.onrender.com"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
