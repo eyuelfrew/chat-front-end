@@ -23,7 +23,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
       const { data } = await axios.get(
-        "https://chat-app-back-6bsl.onrender.com/api/chat",
+        "https://chat-app-back-zsof.onrender.com/api/chat",
         config
       );
       setChats(data);

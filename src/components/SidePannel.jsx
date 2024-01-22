@@ -49,7 +49,7 @@ const SidePannel = () => {
         },
       };
       const { data } = await axios.post(
-        "https://chat-app-back-6bsl.onrender.com/api/chat",
+        "https://chat-app-back-zsof.onrender.com/api/chat",
         { userId },
         config
       );
@@ -77,7 +77,7 @@ const SidePannel = () => {
         },
       };
       const { data } = await axios.get(
-        `https://chat-app-back-6bsl.onrender.com/api/user/?search=${search}`,
+        `https://chat-app-back-zsof.onrender.com/api/user/?search=${search}`,
         config
       );
       setLoading(false);

@@ -8,7 +8,7 @@ import axios from "axios";
 import ScrollableChat from "../components/ScrollableChat.jsx";
 import "./../App.css";
 import { io } from "socket.io-client";
-const ENDPOINT = "https://chat-app-back-6bsl.onrender.com";
+const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -31,7 +31,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.get(
-        `https://chat-app-back-6bsl.onrender.com/api/message/${selectedChat._id}`,
+        `https://chat-app-back-zsof.onrender.com/api/message/${selectedChat._id}`,
         config
       );
       setLoading(false);
@@ -52,7 +52,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         const { data } = await axios.post(
-          "https://chat-app-back-6bsl.onrender.com/api/message",
+          "https://chat-app-back-zsof.onrender.com/api/message",
           {
             content: newMessage,
             chatId: selectedChat._id,
