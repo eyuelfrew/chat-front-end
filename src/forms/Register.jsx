@@ -38,7 +38,7 @@ const Register = () => {
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       axios
-        .post("https://chat-app-back-6bsl.onrender.com/api/user", fields)
+        .post("https://chat-app-back-zsof.onrender.com/api/user", fields)
         .then((res) => {
           if (res.data.status === 201) {
             toast.success("User Registered!");
