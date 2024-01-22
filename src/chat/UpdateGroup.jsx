@@ -34,7 +34,10 @@ const UpdateGroup = ({
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `https://chat-app-back-6bsl.onrender.com/api/user?search=${search}`,
+        config
+      );
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -53,7 +56,7 @@ const UpdateGroup = ({
         },
       };
       const { data } = await axios.put(
-        "/api/chat/rename",
+        "https://chat-app-back-6bsl.onrender.com/api/chat/rename",
         {
           chatId: selectedChat._id,
           chatName: groupChatName,

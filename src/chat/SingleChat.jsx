@@ -31,7 +31,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `https://chat-app-back-6bsl.onrender.com/api/message/${selectedChat._id}`,
         config
       );
       setLoading(false);
@@ -52,7 +52,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         const { data } = await axios.post(
-          "/api/message",
+          "https://chat-app-back-6bsl.onrender.com/api/message",
           {
             content: newMessage,
             chatId: selectedChat._id,

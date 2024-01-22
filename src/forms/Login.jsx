@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios
-      .post("/api/user/login", {
+      .post("https://chat-app-back-6bsl.onrender.com/api/user/login", {
         email,
         password,
       })
