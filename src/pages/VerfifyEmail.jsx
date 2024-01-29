@@ -14,7 +14,7 @@ const VerfifyEmail = () => {
   const confirmEmail = async () => {
     setLoading(true);
     const { data } = await axios.get(
-      `http://localhost:5000/api/user/confirm/${token}`
+      `https://chat-app-back-zsof.onrender.com/api/user/confirm/${token}`
     );
     console.log(data);
     localStorage.setItem("user_info", JSON.stringify(data.user));
