@@ -21,19 +21,30 @@ const SignUp = () => {
     e.preventDefault();
     const validationErrors = {};
     if (!fields.name.trim()) {
+      setErrors({ name: "test" });
       toast.error("Full Name is required!");
     }
     if (!fields.email.trim()) {
+      setErrors({ name: "test" });
+
       validationErrors.email = "Email is required!";
     } else if (!/\S+@\S+\.\S+/.test(fields.email)) {
+      setErrors({ name: "test" });
+
       toast.error("Email is not valid!");
     }
     if (!fields.password.trim()) {
+      setErrors({ name: "test" });
+
       validationErrors.password = "Password is required!";
     } else if (fields.password.length < 6) {
+      setErrors({ name: "test" });
+
       toast.error("Password must be at leat 6 character!");
     }
     if (fields.confirm_password !== fields.password) {
+      setErrors({ name: "test" });
+
       toast.error("Password did not match!");
     }
     setErrors(validationErrors);
