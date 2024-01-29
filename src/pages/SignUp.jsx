@@ -49,7 +49,6 @@ const SignUp = () => {
     }
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
-      console.log(fields);
       axios
         .post("https://chat-app-back-zsof.onrender.com/api/user", fields)
         .then((res) => {

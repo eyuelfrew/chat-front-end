@@ -17,8 +17,10 @@ const VerfifyEmail = () => {
     const { data } = await axios.get(
       `https://chat-app-back-zsof.onrender.com/api/user/confirm/${token}`
     );
-    console.log(data.user);
-    setUser(data.user);
+
+    const info = data.user;
+    console.log(data);
+    setUser(info);
     localStorage.setItem("user_info", JSON.stringify(data.user));
     navigateTo("/chat");
   };

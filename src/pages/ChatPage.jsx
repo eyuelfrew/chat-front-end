@@ -11,9 +11,9 @@ const ChatPage = () => {
   const { user } = ChatState();
   const navigateTo = useNavigate();
   const [fetchAgain, setFetchAgain] = useState(false);
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  // useEffect(() => {
+  //   console.log(user);
+  // }, []);
   return (
     <>
       <Container fluid className="vh-100">

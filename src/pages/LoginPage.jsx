@@ -25,7 +25,6 @@ const LoginPage = () => {
       .post("https://chat-app-back-zsof.onrender.com/api/user/login", form)
       .then((data) => {
         const response = data.data;
-        console.log(response);
         if (response.status === 200) {
           setUser(response);
           localStorage.setItem("user_info", JSON.stringify(response));
