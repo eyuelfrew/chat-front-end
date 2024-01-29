@@ -4,11 +4,16 @@ import SidePannel from "../components/SidePannel";
 import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 const ChatPage = () => {
   const { user } = ChatState();
+  const navigateTo = useNavigate();
   const [fetchAgain, setFetchAgain] = useState(false);
+  useEffect(() => {
+    if (!user) navigateTo("/");
+  }, []);
   return (
     <>
       <Container fluid className="vh-100">
