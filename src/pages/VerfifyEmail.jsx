@@ -17,6 +17,8 @@ const VerfifyEmail = () => {
       `https://chat-app-back-zsof.onrender.com/api/user/confirm/${token}`
     );
     console.log(data);
+    const { setUser } = ChatState();
+    setUser(data.user);
     localStorage.setItem("user_info", JSON.stringify(data.user));
     naviageTo("/chat");
   };
