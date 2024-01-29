@@ -8,19 +8,19 @@ useParams;
 const VerfifyEmail = () => {
   const { token } = useParams();
   const { setUser } = ChatState();
+
   const [loading, setLoading] = useState(false);
   // const { user, setUser } = ChatState();
-  const naviageTo = useNavigate();
+  const navigateTo = useNavigate();
   const confirmEmail = async () => {
     setLoading(true);
     const { data } = await axios.get(
       `https://chat-app-back-zsof.onrender.com/api/user/confirm/${token}`
     );
-    console.log(data);
-    const { setUser } = ChatState();
+    console.log(data.user);
     setUser(data.user);
     localStorage.setItem("user_info", JSON.stringify(data.user));
-    naviageTo("/chat");
+    navigateTo("/chat");
   };
   useEffect(() => {
     confirmEmail();
