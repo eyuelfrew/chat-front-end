@@ -16,7 +16,7 @@ import {
   // Col,
 } from "react-bootstrap";
 import { IoSearchSharp } from "react-icons/io5";
-import { ChatState } from "../Context/ChatProvider";
+import { ChatState } from "../Context/ChatProvider.jsx";
 import Profile from "./Profile";
 import "../App.css";
 import toast from "react-hot-toast";
@@ -53,7 +53,7 @@ const SidePannel = () => {
         { userId },
         config
       );
-      console.log(data);
+      // console.log(data);
       if (!chats.find((c) => c._id === data._id)) {
         setChats([data, ...chats]);
       }
@@ -82,16 +82,17 @@ const SidePannel = () => {
       );
       setLoading(false);
       setSearchResult(data);
-      console.log(searchResult);
+      // console.log(searchResult);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    const user = localStorage.getItem("user_info");
-    if (!user) {
-      navigateTo("/");
-    }
+    // console.log(user);
+    // const user = localStorage.getItem("user_info");
+    // if (!user) {
+    //   navigateTo("/");
+    // }
   });
   return (
     <div>

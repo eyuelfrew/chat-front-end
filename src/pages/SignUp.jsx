@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-
+import { Link } from "react-router-dom";
 import "../App.css";
 
 const SignUp = () => {
@@ -36,7 +36,7 @@ const SignUp = () => {
         }
       );
     }
-    console.log(data);
+    // console.log(data);
   };
 
   const handleChange = (e) => {
@@ -70,8 +70,8 @@ const SignUp = () => {
   };
   return (
     <>
-      <div className="container-fluid vh-100 d-flex  justify-content-center align-items-center">
-        <div className="box h-75">
+      <div className="container-fluid vh-100 d-flex  justify-content-center align-items-center ">
+        <div className="box h-75 ">
           <form className="h-100" onSubmit={handleSubmit}>
             {loading ? (
               <div className="d-flex justify-content-center">
@@ -127,7 +127,7 @@ const SignUp = () => {
             </div>
             <div className="links">
               <a>Have Account Already? </a>
-              <a href="/signeup">Login</a>
+              <Link to={"/"}>Login</Link>
             </div>
             <div className="row">
               <button className="btn btn-primary " type="submit">

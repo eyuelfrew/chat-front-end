@@ -7,8 +7,7 @@ import GroupChat from "../chat/GroupChat";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 // import toast from "react-hot-toast";
-const MyChats = ({ fetchAgain }) => {
-  // console.log(fetchAgain);
+const MyChats = ({ personuser, fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const hanldeSelection = (ch) => {
@@ -63,7 +62,7 @@ const MyChats = ({ fetchAgain }) => {
             >
               <p>
                 {!chat.isGroupChat
-                  ? getSender(loggedUser, chat.users)
+                  ? getSender(user, chat.users)
                   : chat.chatName}
               </p>
             </div>

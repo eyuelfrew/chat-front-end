@@ -25,9 +25,9 @@
   ****Login Page*****
 */
 .box {
-  width: 380px;
-  height: 420px;
+  width: 360px;
   background: #1c1c1c;
+  height: fit-content;
   border-radius: 8px;
 }
 .box form {

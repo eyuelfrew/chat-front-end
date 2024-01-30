@@ -27,8 +27,8 @@ const LoginPage = () => {
       .then((data) => {
         const response = data.data;
         if (response.status === 200) {
-          setUser(response);
           localStorage.setItem("user_info", JSON.stringify(response));
+          setUser(response);
           setLoading(false);
           navigateTo("/chat");
         }

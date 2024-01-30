@@ -12,7 +12,7 @@ const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setUser, setSelectedChat } = ChatState();
   const [newMessage, setNewMessage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -59,7 +59,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
+        // console.log(data);
         setLoading(false);
         setNewMessage("");
         socket.emit("new message", data);
@@ -70,6 +70,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
   useEffect(() => {
+    // console.log(user);
+    // setUser(localStorage.getItem("user_info"));
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));

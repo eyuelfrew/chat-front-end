@@ -5,15 +5,12 @@ import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
 import { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 const ChatPage = () => {
-  const { user } = ChatState();
-  const navigateTo = useNavigate();
+  const { user, setUser } = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false);
-  // useEffect(() => {
-  //   console.log(user);
-  // }, []);
+
   return (
     <>
       <Container fluid className="vh-100">
@@ -34,5 +31,7 @@ const ChatPage = () => {
     </>
   );
 };
-
+{
+  /* <MyChats fetchAgain={fetchAgain}/> */
+}
 export default ChatPage;
