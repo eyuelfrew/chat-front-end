@@ -11,14 +11,15 @@ import "./../App.css";
 import { Link, useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-
   const navigateTo = useNavigate();
   const { setUser } = ChatState();
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     //https://chat-app-back-zsof.onrender.com/api/user/login
     axios
@@ -28,12 +29,15 @@ const LoginPage = () => {
         if (response.status === 200) {
           setUser(response);
           localStorage.setItem("user_info", JSON.stringify(response));
+          setLoading(false);
           navigateTo("/chat");
         }
         if (response.status === 401) {
+          setLoading(false);
           toast.error("Wrong Credentials");
         }
         if (response.status === 404) {
+          setLoading(false);
           toast.error("User Not Found");
         }
       })
@@ -78,8 +82,14 @@ const LoginPage = () => {
               Login
             </button>
           </div>
+          {loading && (
+            <div className="d-flex justify-content-center ">
+              <div className="loader mt-5"></div>
+            </div>
+          )}
         </form>
       </div>
+
       <Toaster position="top-center" />
     </div>
   );

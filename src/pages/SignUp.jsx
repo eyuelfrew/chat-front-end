@@ -4,83 +4,82 @@ import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 
 import "../App.css";
-useState;
+
 const SignUp = () => {
-  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [fields, setFields] = useState({
     name: "",
     email: "",
     password: "",
     confirm_password: "",
   });
+  const SignUp = async () => {
+    setLoading(true);
+    const { data } = await axios.post(
+      "https://chat-app-back-zsof.onrender.com/api/user",
+      fields
+    );
+    setLoading(false);
+
+    if (data.status == 201) {
+      setFields({
+        name: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+      });
+      toast(
+        "We Have Sent You Email!!!\n\nClick The Link To Verifiy Your Email Account.",
+        {
+          duration: 4000,
+          icon: "👏",
+        }
+      );
+    }
+    console.log(data);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFields({ ...fields, [name]: value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = {};
     if (!fields.name.trim()) {
-      setErrors({ name: "test" });
-      toast.error("Full Name is required!");
+      toast.error("Full Name is required!", { duration: 1500 });
+      return;
     }
     if (!fields.email.trim()) {
-      setErrors({ name: "test" });
-
-      validationErrors.email = "Email is required!";
+      toast.error("Email is required!", { duration: 1500 });
+      return;
     } else if (!/\S+@\S+\.\S+/.test(fields.email)) {
-      setErrors({ name: "test" });
-
-      toast.error("Email is not valid!");
+      toast.error("Email is not valid!", { duration: 1500 });
+      return;
     }
     if (!fields.password.trim()) {
-      setErrors({ name: "test" });
-
-      validationErrors.password = "Password is required!";
+      toast.error("Password is required!");
     } else if (fields.password.length < 6) {
-      setErrors({ name: "test" });
-
-      toast.error("Password must be at leat 6 character!");
+      toast.error("Password must be at leat 6 character!", { duration: 1500 });
+      return;
     }
     if (fields.confirm_password !== fields.password) {
-      setErrors({ name: "test" });
-
-      toast.error("Password did not match!");
+      toast.error("Password did not match!", { duration: 1500 });
+      return;
     }
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      axios
-        .post("https://chat-app-back-zsof.onrender.com/api/user", fields)
-        .then((res) => {
-          if (res.data.status === 201) {
-            setFields({
-              name: "",
-              email: "",
-              password: "",
-              confirm_password: "",
-            });
-            toast((t) => (
-              <span>
-                Check Your email, we have sent you a link for verifiying your
-                account! <b>bold</b>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => toast.dismiss(t.id)}
-                >
-                  x
-                </button>
-              </span>
-            ));
-          }
-        });
-    }
+    SignUp();
   };
   return (
     <>
       <div className="container-fluid vh-100 d-flex  justify-content-center align-items-center">
         <div className="box h-75">
           <form className="h-100" onSubmit={handleSubmit}>
-            <h2>Create Account </h2>
+            {loading ? (
+              <div className="d-flex justify-content-center">
+                <div className="loader"></div>
+              </div>
+            ) : (
+              <h2>Create Account</h2>
+            )}
             <div className="inputBox">
               <input
                 type="text"
@@ -91,9 +90,6 @@ const SignUp = () => {
               />
               <span>Full Name</span>
               <i></i>
-              {errors.name && (
-                <span className="bg-danger text-white">{errors.name}</span>
-              )}
             </div>
             <div className="inputBox">
               <input
@@ -105,9 +101,6 @@ const SignUp = () => {
               />
               <span>Your Email</span>
               <i></i>
-              {errors.email && (
-                <span className="bg-danger text-white">{errors.name}</span>
-              )}
             </div>
             <div className="inputBox">
               <input
@@ -119,9 +112,6 @@ const SignUp = () => {
               />
               <span>Password</span>
               <i></i>
-              {errors.password && (
-                <span className="bg-danger text-white">{errors.name}</span>
-              )}
             </div>
             <div className="inputBox">
               <input
