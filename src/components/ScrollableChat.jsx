@@ -10,10 +10,10 @@ import { ChatState } from "../Context/ChatProvider";
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
   return (
-    <ScrollableFeed>
+    <ScrollableFeed style={{ width: "500px" }}>
       {messages &&
         messages.map((m, i) => (
-          <div className="d-flex" key={m._id}>
+          <div className="d-flex w-100 " key={m._id}>
             {(isSameSender(messages, m, i, user._id) ||
               isLastMessage(messages, i, user._id)) && (
               <div

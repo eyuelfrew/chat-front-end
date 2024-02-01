@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaSearch, FaTelegramPlane } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa";
 import { ChatState } from "../Context/ChatProvider";
 import { Card, Button, Spinner, Row, Col, FormControl } from "react-bootstrap";
 import { getSender } from "./ChatLogic.jsx";
@@ -12,7 +12,7 @@ const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
-  const { user, selectedChat, setUser, setSelectedChat } = ChatState();
+  const { user, selectedChat } = ChatState();
   const [newMessage, setNewMessage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -71,7 +71,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   useEffect(() => {
     // console.log(user);
-    // setUser(localStorage.getItem("user_info"));
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
@@ -117,9 +116,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
   return (
-    <div>
+    <>
       {Object.keys(selectedChat).length !== 0 ? (
-        <Card.Header>
+        <div className="card-header ">
           {!selectedChat.isGroupChat ? (
             <p>
               {getSender(user, selectedChat.users)}
@@ -141,44 +140,41 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               />
             </>
           )}
-        </Card.Header>
+        </div>
       ) : (
         <></>
       )}
       {Object.keys(selectedChat).length !== 0 ? (
-        <Card.Body className=" ">
+        <div className="w-100">
           {!selectedChat.isGroupChat ? (
             <>
               {/* {getSender(user, selectedChat.users)} */}
               {loading ? (
-                <Spinner animation="border" variant="success" />
+                <div className="card-body " style={{ height: "28.8em" }}>
+                  <Spinner animation="border" variant="success" />
+                </div>
               ) : (
                 <>
-                  <div className="vh-100 bg-danger position-absolute w-100">
+                  <div className=" bg-danger  ">
                     <div
-                      className="messages overflow-scroll"
-                      style={{ height: "415px" }}
+                      className="messages overflow-scroll "
+                      style={{ height: "26em" }}
                     >
                       <ScrollableChat messages={messages} />
                     </div>
-                    <div className="position-relative sticky-top">
-                      <Row>
-                        <Col>
-                          <FormControl
-                            className="border-5 border-danger-subtle"
-                            onKeyDown={sendMessage}
-                            placeholder="Wrtie Message!"
-                            required
-                            onChange={typingHandler}
-                            value={newMessage}
-                          ></FormControl>
-                        </Col>
-                        <Col>
-                          <Button>
-                            <FaTelegramPlane />
-                          </Button>
-                        </Col>
-                      </Row>
+                    <div className="d-flex">
+                      <input
+                        type="text"
+                        className="border-5 border-danger-subtle form-control"
+                        onKeyDown={sendMessage}
+                        placeholder="Wrtie Message!"
+                        required
+                        onChange={typingHandler}
+                        value={newMessage}
+                      />
+                      <button className="btn btn-primary  rounded-0 ">
+                        <FaTelegramPlane />
+                      </button>
                     </div>
                   </div>
                 </>
@@ -189,13 +185,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <h1 className="text-bg-danger">this Group Chat</h1>
             </>
           )}
-        </Card.Body>
+        </div>
       ) : (
-        <Card.Body className="d-flex justify-content-center align-items-center vh-100 ">
+        <div
+          className="card-body d-flex justify-content-center align-items-center "
+          style={{ height: "32.32em" }}
+        >
           Click User To Start Chating
-        </Card.Body>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

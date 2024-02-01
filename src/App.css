@@ -1,7 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Salsa&display=swap");
 .App {
-  background: #23232a;
+  position: absolute;
+  background: #000000;
   color: white;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+.app-layout {
+  margin-top: 1%;
+  margin-bottom: -5% !important;
 }
 .offcanvas-pos {
   margin-left: 1rem;
@@ -112,6 +120,19 @@
 .box form .links a:hover,
 .box form .links a:nth-child(2) {
   color: #fff;
+}
+
+/* 
+============Nav Bar Component========
+*/
+.navbar-color {
+  background-color: #000035;
+}
+.offcanvas {
+  color: white !important;
+}
+.offcanvas .offcanvas-body ul li {
+  padding-top: 10%;
 }
 /* 
 ============Loading Component========

@@ -1,33 +1,37 @@
-import { Container, Row, Col } from "react-bootstrap";
 import { ChatState } from "../Context/ChatProvider";
-import SidePannel from "../components/SidePannel";
+import NavBar from "../components/NavBar";
 import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
 import { Toaster } from "react-hot-toast";
-import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import { useState } from "react";
 const ChatPage = () => {
-  const { user, setUser } = ChatState();
+  const { user } = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false);
 
   return (
     <>
-      <Container fluid className="vh-100">
-        {user && <SidePannel />}
-        <Row>
-          <Col sm={4} lg={4}>
+      <div
+        className="container-fluid app-layout"
+        style={{ width: "90%", marginBottom: "100px" }}
+      >
+        {user && <NavBar />}
+        <div className="row g-0 h-100 ">
+          <div
+            className="col-4 d-sm-none d-md-flex "
+            style={{ height: "30em" }}
+          >
             {user && <MyChats fetchAgain={fetchAgain} />}
-          </Col>
-          <Col sm={4} lg={6}>
-            {" "}
+          </div>
+          <div className="col-lg-8" style={{ height: "30em" }}>
             {user && (
               <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
             )}
-          </Col>
-        </Row>
+          </div>
+        </div>
+        {/* {user && <MyChats fetchAgain={fetchAgain} />} */}
+
         <Toaster position="top-center" />
-      </Container>
+      </div>
     </>
   );
 };

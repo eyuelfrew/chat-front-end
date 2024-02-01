@@ -1,6 +1,11 @@
+import { IoMenu } from "react-icons/io5";
+import { HiSpeakerphone } from "react-icons/hi";
+import { FaUserLarge } from "react-icons/fa6";
+import { MdGroups2, MdDelete } from "react-icons/md";
+import { IoMdNotifications } from "react-icons/io";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
   Offcanvas,
   Image,
@@ -10,18 +15,14 @@ import {
   Container,
   Spinner,
   InputGroup,
-  // Modal,
-  // Container,
-  // Row,
-  // Col,
 } from "react-bootstrap";
 import { IoSearchSharp } from "react-icons/io5";
 import { ChatState } from "../Context/ChatProvider.jsx";
-import Profile from "./Profile";
+import Profile from "./Profile.jsx";
 import "../App.css";
 import toast from "react-hot-toast";
-import UsersList from "./UsersList";
-const SidePannel = () => {
+import UsersList from "./UsersList.jsx";
+const NavBar = () => {
   const [showSide, setShowSide] = useState(false);
   const handleClose = () => setShowSide(false);
   const handleShow = (e) => {
@@ -96,10 +97,18 @@ const SidePannel = () => {
   });
   return (
     <div>
-      <nav className="navbar bg-body-tertiary mt-4 rounded-3">
+      <nav className="navbar rounded-top-3 navbar-color">
         <div className="container-fluid">
-          <a className="navbar-brand">Navbar</a>
-          <h1 className="fs-3">Talk With Friends</h1>
+          <button
+            className="btn btn-lg "
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample"
+          >
+            <IoMenu className="text-primary fs-2 fw-bolder" />
+          </button>
+          {/* <h1 className="fs-3">Talk With Friends</h1> */}
           <div
             className="d-flex h-100 justify-content-between mx-5"
             role="search"
@@ -111,14 +120,19 @@ const SidePannel = () => {
               aria-label="Search"
             /> */}
             <div>
+              <IoMdNotifications
+                className="mt-2"
+                size={27}
+                onClick={() => alert("Notificaion Works!")}
+              />
               <button className="btn btn-outline-success" onClick={handleShow}>
                 <IoSearchSharp />
                 Search Users
               </button>
             </div>
-            <div className="mx-4">
+            <div className="mx-4 d-flex ">
               <Dropdown>
-                <Dropdown.Toggle className="border-0 bg-transparent text-black">
+                <Dropdown.Toggle className="border-0 bg-transparent text-white">
                   {user.name}
                   <Image width={30} src={user.pic} roundedCircle />
                 </Dropdown.Toggle>
@@ -138,13 +152,13 @@ const SidePannel = () => {
       <Offcanvas
         show={showSide}
         onHide={handleClose}
-        className="offcanvas-pos "
+        className="position-absolute "
       >
         <Offcanvas.Header closeButton>
           <h4>Find Users</h4>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <InputGroup className="">
+          <InputGroup className="bxcbvx">
             <InputGroup.Text id="basic-addon1">
               <IoSearchSharp />
             </InputGroup.Text>
@@ -179,8 +193,82 @@ const SidePannel = () => {
            Profle Show Modal
        */}
       <Profile show={modalShow} onHide={() => setModalShow(false)} />
+      {/* --------OFF-CANVAS-------- */}
+      <div
+        className="offcanvas offcanvas-start bg-dark position-absolute   rounded-top-5 "
+        id="offcanvasExample"
+        aria-labelledby="offcanvasExampleLabel"
+      >
+        <div className="">
+          <div className="row">
+            <div className="col-10">
+              <img src={user.pic} className="w-25 rounded-5 " alt="" />
+            </div>
+            <div className="col-2">
+              {" "}
+              <button
+                type="button"
+                className="btn btn-primary  bg-transparent  rounded-5 "
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              >
+                X
+              </button>
+            </div>
+          </div>
+          <div className="row">
+            <h2 className="text-white mx-2 fs-5">{user.name}</h2>
+          </div>
+        </div>
+        <div className="offcanvas-body">
+          <div className="">
+            <ul className="">
+              <li
+                className="list-group-item "
+                onClick={() => alert("test")}
+                style={{ cursor: "pointer" }}
+              >
+                <MdGroups2 size={27} className="mx-3" />
+                New Group
+              </li>
+              <li
+                className="list-group-item "
+                onClick={() => alert("test")}
+                style={{ cursor: "pointer" }}
+              >
+                <HiSpeakerphone size={27} className="mx-3" />
+                New Channel
+              </li>
+              <li
+                className="list-group-item "
+                onClick={() => alert("test")}
+                style={{ cursor: "pointer" }}
+              >
+                <MdGroups2 size={27} className="mx-3" />
+                New Group
+              </li>
+              <li
+                className="list-group-item "
+                onClick={() => alert("test")}
+                style={{ cursor: "pointer" }}
+              >
+                <FaUserLarge size={27} className="mx-3" />
+                Profile
+              </li>
+              <li
+                className="list-group-item "
+                onClick={() => alert("test")}
+                style={{ cursor: "pointer" }}
+              >
+                <MdDelete size={27} className="mx-3 text-danger" />
+                Delete Account
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default SidePannel;
+export default NavBar;
