@@ -22,6 +22,8 @@ import Profile from "./Profile.jsx";
 import "../App.css";
 import toast from "react-hot-toast";
 import UsersList from "./UsersList.jsx";
+import Swal from "sweetalert2";
+
 const NavBar = () => {
   const [showSide, setShowSide] = useState(false);
   const handleClose = () => setShowSide(false);
@@ -87,6 +89,33 @@ const NavBar = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleDeleteAccount = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to recover this! 😳",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      customClass: "dark-theme",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        axios.delete(
+          `https://chat-app-back-zsof.onrender.com/api/user/account/del/${user._id}`,
+          config
+        );
+        localStorage.clear();
+        navigateTo("/chat/re");
+      }
+    });
   };
   useEffect(() => {
     // console.log(user);
@@ -257,7 +286,7 @@ const NavBar = () => {
               </li>
               <li
                 className="list-group-item "
-                onClick={() => alert("test")}
+                onClick={handleDeleteAccount}
                 style={{ cursor: "pointer" }}
               >
                 <MdDelete size={27} className="mx-3 text-danger" />

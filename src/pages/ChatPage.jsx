@@ -3,11 +3,17 @@ import NavBar from "../components/NavBar";
 import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const ChatPage = () => {
   const { user } = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false);
-
+  const navigateTo = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("user_info")) {
+      navigateTo("/");
+    }
+  }, []);
   return (
     <>
       <div

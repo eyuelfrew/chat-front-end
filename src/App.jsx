@@ -5,6 +5,8 @@ import SignUp from "./pages/SignUp.jsx";
 import ChatPage from "./pages/ChatPage";
 import VerfifyEmail from "./pages/VerfifyEmail.jsx";
 import ChatProvider from "./Context/ChatProvider.jsx";
+import DeletedAccount from "./pages/DeletedAccount.jsx";
+
 const App = () => {
   return (
     <div className="App">
@@ -14,6 +16,7 @@ const App = () => {
           <Route path={"/user/signup"} element={<SignUp />} />
           <Route path={"/chat"} element={<ChatPage />} />
           <Route path={"/user/confirm/:token"} element={<VerfifyEmail />} />
+          <Route path={"/chat/re"} element={<DeletedAccount />} />
         </Routes>
       </ChatProvider>
     </div>

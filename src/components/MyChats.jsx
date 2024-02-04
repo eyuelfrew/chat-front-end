@@ -1,25 +1,14 @@
 import { useEffect, useState } from "react";
 import { ChatState } from "../Context/ChatProvider";
-// import { IoMdAddCircleOutline } from "react-icons/io";
 import Spinner from "react-bootstrap/Spinner";
-import { senderInfo, getSender } from "../chat/ChatLogic";
-// import GroupChat from "../chat/GroupChat";
+import { senderInfo } from "../chat/ChatLogic.jsx";
 import axios from "axios";
-// import toast from "react-hot-toast";
 const MyChats = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false);
-  const {
-    user,
-    selectedChat,
-    setSelectedChat,
-    setLoggedUser,
-    chats,
-    setChats,
-  } = ChatState();
+  const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const hanldeSelection = (ch) => {
     setSelectedChat(ch);
   };
-  const [modalShow, setModalShow] = useState(false);
   const fetchChats = async () => {
     setLoading(true);
     try {
@@ -32,13 +21,14 @@ const MyChats = ({ fetchAgain }) => {
         "https://chat-app-back-zsof.onrender.com/api/chat",
         config
       );
-      console.log(data);
+      // console.log(data);
       setChats(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(() => {}, []);
   useEffect(() => {
     // setLoggedUser(JSON.parse(localStorage.getItem("user_info")));
     fetchChats();

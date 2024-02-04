@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaTelegramPlane } from "react-icons/fa";
 import { ChatState } from "../Context/ChatProvider";
-import { Card, Button, Spinner, Row, Col, FormControl } from "react-bootstrap";
-import { getSender } from "./ChatLogic.jsx";
+import { Spinner } from "react-bootstrap";
+import { getSender, senderInfo } from "./ChatLogic.jsx";
 import UpdateGroup from "./UpdateGroup.jsx";
 import axios from "axios";
 import ScrollableChat from "../components/ScrollableChat.jsx";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
 import "./../App.css";
 import { io } from "socket.io-client";
 const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
@@ -18,6 +22,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+  var [deleteLoading, setDeleteLoading] = useState(false);
   // const [state, setState] = useState();
   const fetchMessages = async () => {
     if (!selectedChat) {
@@ -34,6 +39,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `https://chat-app-back-zsof.onrender.com/api/message/${selectedChat._id}`,
         config
       );
+      console.log(data);
       setLoading(false);
       setMessages(data);
       socket.emit("join chat", selectedChat._id);
@@ -59,7 +65,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // console.log(data);
         setLoading(false);
         setNewMessage("");
         socket.emit("new message", data);
@@ -115,13 +120,67 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
+  const handleDeleteChat = () => {};
+  const handleClearChat = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Deleting Chat",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      customClass: "dark-theme",
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          html: '<div class="delete-loader"></div>',
+          customClass: "dark-theme",
+        });
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          const { data } = await axios.delete(
+            `https://chat-app-back-zsof.onrender.com/api/message/clear/${selectedChat._id}`,
+            config
+          );
+          fetchMessages();
+          if (data.message.acknowledged === true) {
+            Swal.fire(
+              {
+                customClass: "dark-theme",
+                icon: "success",
+                text: "Chat Cleared👍",
+              },
+              "Cleared!",
+              "Chat has been cleared.",
+              "success"
+            );
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    });
+  };
   return (
     <>
       {Object.keys(selectedChat).length !== 0 ? (
         <div className="card-header ">
           {!selectedChat.isGroupChat ? (
-            <p>
-              {getSender(user, selectedChat.users)}
+            <p className="fs-5">
+              {senderInfo(user, selectedChat.users).name}
+              <BsThreeDotsVertical
+                className="float-end mt-1 fs-4"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#chatMenu"
+              />
               {/* <Button onClick={() => setSelectedChat("")}>
                 {" "}
                 Clear Histry1
@@ -148,7 +207,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         <div className="w-100">
           {!selectedChat.isGroupChat ? (
             <>
-              {/* {getSender(user, selectedChat.users)} */}
+              {/* {getSender(user, selectedChat.users).name} */}
               {loading ? (
                 <div className="card-body " style={{ height: "28.8em" }}>
                   <Spinner animation="border" variant="success" />
@@ -194,8 +253,46 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           Click User To Start Chating
         </div>
       )}
+      <div
+        className="modal fade "
+        id="chatMenu"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered ">
+          <div className="modal-content bg-dark text-white">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-5 " id="exampleModalLabel">
+                Chat Menu
+              </h1>
+              <button
+                type="button"
+                className="btn btn-sm bg-transparent text-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <IoClose className="fs-4" />
+              </button>
+            </div>
+            <div className="modal-body ">
+              <div className="row manu-list" onClick={handleClearChat}>
+                <h5>Clear Chat</h5>
+              </div>
+              <div className="row manu-list" onClick={handleDeleteChat}>
+                <h5>
+                  Delete Chat{" "}
+                  <MdDelete className="float-end mx-5 text-danger" />{" "}
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
 export default SingleChat;
+
+// <!-- Modal -->
