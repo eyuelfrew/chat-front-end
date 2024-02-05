@@ -15,9 +15,10 @@ import "./../App.css";
 import { io } from "socket.io-client";
 const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const SingleChat = () => {
   const [messages, setMessages] = useState([]);
-  const { user, selectedChat, setCurrentChat } = ChatState();
+  const { user, selectedChat, setCurrentChat, setFetchAgain, fetchAgain } =
+    ChatState();
   const [newMessage, setNewMessage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -49,7 +50,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const sendMessage = async (e) => {
     if (e.key === "Enter" && newMessage) {
-      setFetchAgain(!fetchAgain);
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -66,10 +66,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
+
         setLoading(false);
         setNewMessage("");
         socket.emit("new message", data);
         setMessages([...messages, data]);
+        setFetchAgain(!fetchAgain);
       } catch (error) {
         console.log(error);
       }

@@ -3,13 +3,14 @@ import { ChatState } from "../Context/ChatProvider";
 import Spinner from "react-bootstrap/Spinner";
 import { senderInfo } from "../chat/ChatLogic.jsx";
 import axios from "axios";
-const MyChats = ({ fetchAgain }) => {
+const MyChats = () => {
   const [loading, setLoading] = useState(false);
   const {
     user,
     selectedChat,
     setSelectedChat,
     chats,
+    fetchAgain,
     currentChat,
     setChats,
     setCurrentChat,
@@ -29,6 +30,7 @@ const MyChats = ({ fetchAgain }) => {
         "https://chat-app-back-zsof.onrender.com/api/chat",
         config
       );
+      console.log(data);
       setChats(data);
       setLoading(false);
     } catch (error) {
@@ -36,11 +38,11 @@ const MyChats = ({ fetchAgain }) => {
     }
   };
   useEffect(() => {
-    // if (selectedChat._id === currentChat) {
-    //   return;
-    // }
-    setCurrentChat(selectedChat._id);
+    if (selectedChat._id === currentChat) {
+      return;
+    }
     fetchChats();
+    setCurrentChat(selectedChat._id);
   }, [fetchAgain]);
   return (
     <div
