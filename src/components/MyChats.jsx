@@ -5,12 +5,20 @@ import { senderInfo } from "../chat/ChatLogic.jsx";
 import axios from "axios";
 const MyChats = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false);
-  const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    chats,
+    currentChat,
+    setChats,
+    setCurrentChat,
+  } = ChatState();
   const hanldeSelection = (ch) => {
     setSelectedChat(ch);
   };
   const fetchChats = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const config = {
         headers: {
@@ -21,16 +29,17 @@ const MyChats = ({ fetchAgain }) => {
         "https://chat-app-back-zsof.onrender.com/api/chat",
         config
       );
-      // console.log(data);
       setChats(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {}, []);
   useEffect(() => {
-    // setLoggedUser(JSON.parse(localStorage.getItem("user_info")));
+    // if (selectedChat._id === currentChat) {
+    //   return;
+    // }
+    setCurrentChat(selectedChat._id);
     fetchChats();
   }, [fetchAgain]);
   return (

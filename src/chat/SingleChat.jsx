@@ -9,6 +9,7 @@ import ScrollableChat from "../components/ScrollableChat.jsx";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import { Modal } from "bootstrap";
 import Swal from "sweetalert2";
 import "./../App.css";
 import { io } from "socket.io-client";
@@ -16,7 +17,7 @@ const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
-  const { user, selectedChat } = ChatState();
+  const { user, selectedChat, setCurrentChat } = ChatState();
   const [newMessage, setNewMessage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -39,7 +40,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `https://chat-app-back-zsof.onrender.com/api/message/${selectedChat._id}`,
         config
       );
-      console.log(data);
       setLoading(false);
       setMessages(data);
       socket.emit("join chat", selectedChat._id);
@@ -49,6 +49,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const sendMessage = async (e) => {
     if (e.key === "Enter" && newMessage) {
+      setFetchAgain(!fetchAgain);
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -75,7 +76,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
   useEffect(() => {
-    // console.log(user);
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
@@ -124,7 +124,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const handleClearChat = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Deleting Chat",
+      text: "Clearing Chat",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -276,7 +276,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </button>
             </div>
             <div className="modal-body ">
-              <div className="row manu-list" onClick={handleClearChat}>
+              <div
+                className="row manu-list"
+                data-bs-toggle="modal"
+                data-bs-target="#chatMenu"
+                onClick={handleClearChat}
+              >
                 <h5>Clear Chat</h5>
               </div>
               <div className="row manu-list" onClick={handleDeleteChat}>
@@ -294,5 +299,3 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 };
 
 export default SingleChat;
-
-// <!-- Modal -->

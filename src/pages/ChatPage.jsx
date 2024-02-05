@@ -1,4 +1,4 @@
-import { ChatState } from "../Context/ChatProvider";
+import { ChatState } from "../Context/ChatProvider.jsx";
 import NavBar from "../components/NavBar";
 import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
