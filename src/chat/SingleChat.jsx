@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { FaTelegramPlane } from "react-icons/fa";
 import { ChatState } from "../Context/ChatProvider";
 import { Spinner } from "react-bootstrap";
-import { getSender, senderInfo } from "./ChatLogic.jsx";
+import { senderInfo } from "./ChatLogic.jsx";
+import { PiBroomBold } from "react-icons/pi";
 import UpdateGroup from "./UpdateGroup.jsx";
 import axios from "axios";
 import ScrollableChat from "../components/ScrollableChat.jsx";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { Modal } from "bootstrap";
 import Swal from "sweetalert2";
 import "./../App.css";
 import { io } from "socket.io-client";
@@ -17,15 +17,13 @@ const ENDPOINT = "https://chat-app-back-zsof.onrender.com";
 var socket, selectedChatCompare;
 const SingleChat = () => {
   const [messages, setMessages] = useState([]);
-  const { user, selectedChat, setCurrentChat, setFetchAgain, fetchAgain } =
+  const { user, selectedChat, setFetchAgain, fetchAgain, setCurrentChat } =
     ChatState();
   const [newMessage, setNewMessage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
-  var [deleteLoading, setDeleteLoading] = useState(false);
-  // const [state, setState] = useState();
   const fetchMessages = async () => {
     if (!selectedChat) {
       return;
@@ -66,8 +64,6 @@ const SingleChat = () => {
           },
           config
         );
-
-        setLoading(false);
         setNewMessage("");
         socket.emit("new message", data);
         setMessages([...messages, data]);
@@ -122,7 +118,55 @@ const SingleChat = () => {
       }
     }, timerLength);
   };
-  const handleDeleteChat = () => {};
+  const handleDeleteChat = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Deleting Chat",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!",
+      customClass: "dark-theme",
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          html: '<div class="delete-loader"></div>',
+          customClass: "dark-theme",
+          showConfirmButton: false,
+        });
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          const { data } = await axios.delete(
+            `https://chat-app-back-zsof.onrender.com/api/chat/del/${selectedChat._id}`,
+            config
+          );
+          setCurrentChat({});
+          setFetchAgain(!fetchAgain);
+          if (data.status === 1) {
+            Swal.fire(
+              {
+                customClass: "dark-theme",
+                icon: "success",
+                text: "Chat Deleted👍",
+              },
+              "Deleted!",
+              "Chat has been Deleted👍.",
+              "success"
+            );
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    });
+  };
   const handleClearChat = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -131,14 +175,15 @@ const SingleChat = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, clear it!",
       customClass: "dark-theme",
       allowOutsideClick: () => !Swal.isLoading(),
     }).then(async (result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          html: '<div class="delete-loader"></div>',
+          html: '<div class="clear-loader"></div>',
           customClass: "dark-theme",
+          showConfirmButton: false,
         });
         try {
           const config = {
@@ -177,12 +222,42 @@ const SingleChat = () => {
           {!selectedChat.isGroupChat ? (
             <p className="fs-5">
               {senderInfo(user, selectedChat.users).name}
-              <BsThreeDotsVertical
+              {/* <BsThreeDotsVertical
                 className="float-end mt-1 fs-4"
                 type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#chatMenu"
+              /> */}
+
+              <BsThreeDotsVertical
+                className="float-end mt-1 fs-4"
+                type="button"
+                data-bs-toggle="dropdown"
+                data-bs-auto-close="true"
+                aria-expanded="false"
               />
+              <ul className="dropdown-menu">
+                <li
+                  onClick={handleDeleteChat}
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  className="manu-list "
+                >
+                  <MdDelete className=" text-danger mx-1 mb-1" />
+                  Delete Chat
+                </li>
+                <li
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  onClick={handleClearChat}
+                  className="manu-list mt-2"
+                >
+                  <PiBroomBold className=" text-danger mx-1 mb-1 " />
+                  Clear Chat
+                </li>
+              </ul>
               {/* <Button onClick={() => setSelectedChat("")}>
                 {" "}
                 Clear Histry1

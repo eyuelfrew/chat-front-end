@@ -150,8 +150,7 @@
 * *********/
 .manu-list:hover {
   cursor: pointer;
-  background-color: #000035;
-  border-radius: 10px;
+  background-color: #4d4dff;
 }
 
 /* 
@@ -192,6 +191,17 @@
   animation: l4 1s steps(4) infinite;
 }
 .delete-loader:before {
+  content: "Deleteing...";
+}
+.clear-loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  clip-path: inset(0 3ch 0 0);
+  animation: l4 1s steps(4) infinite;
+}
+.clear-loader:before {
   content: "Clearing...";
 }
 @keyframes l4 {
